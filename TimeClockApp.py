@@ -8,7 +8,10 @@ conn = sqlite3.connect('employeeDatabase.db')
 c = conn.cursor()
 
 c.execute('''CREATE TABLE IF NOT EXISTS users(
-    id INTEGER PRIMARY KEY, name, dob)''')
+    id INTEGER PRIMARY KEY, name TEXT, dob INTEGER, email TEXT)''')
+
+c.execute('''CREATE TABLE IF NOT EXISTS checkin(
+    id INTERGER PRIMARY KEY, checkIn INTEGER, checkOut INTEGER, employeeId INTEGER)''')
 
 answer = True
 while answer:
@@ -30,6 +33,9 @@ while answer:
         timeStamp = str(datetime.datetime.now())
         print(employeeId + "\n Clocked in at " + timeStamp)
 
+        c.execute('INSERT INTO checkin (checkIn, employeeId) values (?,?)', (timeStamp , employeeId))
+        conn.commit()
+
     elif answer == "2":
         employeeId = input("Enter employee ID number: ")
         timeStamp = str(datetime.datetime.now())
@@ -42,19 +48,14 @@ while answer:
         nameFirst = input("\n Enter first name: ")
         nameMiddle = input("\n Enter middle name: ")
         nameLast = input("\n Enter last name: ")
-        
-        dateOfBirth = (input("\n Enter Date of Birth, eg. 4/22/1987: "))
-        
-        
-        
+        dateOfBirth = str(input("\n Enter Date of Birth, eg. 4/22/1987: "))
+        emailAddress = str(input("\n Please enter your email address: "))
+
         newEmployee = str(nameLast + ", " + nameFirst + " " + nameMiddle)
 
-        c.execute("INSERT INTO users (name) VALUES ('" + newEmployee + "');" )
-       
+        c.execute('INSERT INTO users (name,dob,email) values(?,?,?)', (newEmployee, dateOfBirth, emailAddress))
         conn.commit()
-
         
-
         print("\n New employee added: " + nameLast + ", " + nameFirst + " " + nameMiddle + ", born on " + dateOfBirth)
         
     elif answer == "5":
@@ -65,6 +66,7 @@ while answer:
 
     
     elif answer == "7":
+        c.close()
         sys.exit()
 
     else:
