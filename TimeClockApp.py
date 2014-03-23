@@ -19,10 +19,10 @@ while answer:
     Welcome to the Time Clock!
     1. Clock In
     2. Clock Out
-    3. View Hours
+    3. View Hours [TEST]
     4. Add Employee
-    5. List Employees
-    6. Administrator
+    5. List Employees [TEST]
+    6. Administrator [TEST]
     7. Exit application
 """)
 
@@ -42,7 +42,14 @@ while answer:
         employeeId = input("Enter employee ID number: ")
         dateStamp = str(time.strftime("%d/%m/%Y"))
         timeStamp = str(time.strftime("%I:%M:%S"))
+
+        c.execute('SELECT * FROM logs ORDER BY checkOutTime LIMIT 1')
+        rowId = c.fetchone()
+        
         print("\n Clocked out at " + timeStamp)
+        print(rowId)
+        
+     
 
         c.execute('UPDATE logs SET checkOutTime=? WHERE Id=? ', (timeStamp , employeeId))
         conn.commit()
