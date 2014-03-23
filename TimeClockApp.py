@@ -44,14 +44,13 @@ while answer:
         timeStamp = str(time.strftime("%I:%M:%S"))
 
         c.execute('SELECT * FROM logs ORDER BY checkOutTime LIMIT 1')
-        rowId = c.fetchone()
+        fetchRowId = c.fetchone()
+        rowId = fetchRowId[0]
+        
         
         print("\n Clocked out at " + timeStamp)
-        print(rowId)
         
-     
-
-        c.execute('UPDATE logs SET checkOutTime=? WHERE Id=? ', (timeStamp , employeeId))
+        c.execute('UPDATE logs SET checkOutTime=? WHERE Id=? ', (timeStamp , rowId))
         conn.commit()
 
     elif answer == "3":
