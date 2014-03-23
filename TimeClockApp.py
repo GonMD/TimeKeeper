@@ -1,7 +1,6 @@
 import os
 import sys
 import sqlite3
-import datetime
 import time
 
 conn = sqlite3.connect('employeeDatabase.db')
@@ -11,7 +10,7 @@ c = conn.cursor()
 c.execute('''CREATE TABLE IF NOT EXISTS users(
     id INTEGER PRIMARY KEY, name TEXT, dob INTEGER, email TEXT)''')
 
-c.execute('''CREATE TABLE IF NOT EXISTS checkin(
+c.execute('''CREATE TABLE IF NOT EXISTS logs(
     id INTEGER PRIMARY KEY, employeeId INTEGER, checkInDate INTEGER, checkInTime INTEGER, checkOutTime INTEGER)''')
 
 answer = True
@@ -36,7 +35,7 @@ while answer:
         timeStamp = str(time.strftime("%I:%M:%S"))
         print(employeeId + "\n Clocked in at " + timeStamp)
 
-        c.execute('INSERT INTO checkin (employeeId, checkInDate, checkInTime) values (?,?,?)', (employeeId , dateStamp, timeStamp))
+        c.execute('INSERT INTO logs (employeeId, checkInDate, checkInTime) values (?,?,?)', (employeeId , dateStamp, timeStamp))
         conn.commit()
 
     elif answer == "2":
@@ -45,12 +44,7 @@ while answer:
         timeStamp = str(time.strftime("%I:%M:%S"))
         print("\n Clocked out at " + timeStamp)
 
-
-
-
-
-        #cannot seem to get this line working :@
-        c.execute('UPDATE checkin SET (checkOut) WHERE Id=employeeId' , (timeStamp))
+        c.execute('UPDATE logs SET checkOutTime=? WHERE Id=? ', (timeStamp , employeeId))
         conn.commit()
 
     elif answer == "3":
