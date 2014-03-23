@@ -2,6 +2,7 @@ import os
 import sys
 import sqlite3
 import datetime
+import time
 
 conn = sqlite3.connect('employeeDatabase.db')
 
@@ -11,7 +12,7 @@ c.execute('''CREATE TABLE IF NOT EXISTS users(
     id INTEGER PRIMARY KEY, name TEXT, dob INTEGER, email TEXT)''')
 
 c.execute('''CREATE TABLE IF NOT EXISTS checkin(
-    id INTERGER PRIMARY KEY, checkIn INTEGER, checkOut INTEGER, employeeId INTEGER)''')
+    id INTEGER PRIMARY KEY, employeeId INTEGER, checkInDate INTEGER, checkInTime INTEGER, checkOutTime INTEGER)''')
 
 answer = True
 while answer:
@@ -30,16 +31,27 @@ while answer:
 
     if answer == "1":
         employeeId = input("Enter employee ID number: ")
-        timeStamp = str(datetime.datetime.now())
+        dateStamp = str(time.strftime("%d/%m/%Y"))
+        
+        timeStamp = str(time.strftime("%I:%M:%S"))
         print(employeeId + "\n Clocked in at " + timeStamp)
 
-        c.execute('INSERT INTO checkin (checkIn, employeeId) values (?,?)', (timeStamp , employeeId))
+        c.execute('INSERT INTO checkin (employeeId, checkInDate, checkInTime) values (?,?,?)', (employeeId , dateStamp, timeStamp))
         conn.commit()
 
     elif answer == "2":
         employeeId = input("Enter employee ID number: ")
-        timeStamp = str(datetime.datetime.now())
+        dateStamp = str(time.strftime("%d/%m/%Y"))
+        timeStamp = str(time.strftime("%I:%M:%S"))
         print("\n Clocked out at " + timeStamp)
+
+
+
+
+
+        #cannot seem to get this line working :@
+        c.execute('UPDATE checkin SET (checkOut) WHERE Id=employeeId' , (timeStamp))
+        conn.commit()
 
     elif answer == "3":
         print("\n Hours: X")
