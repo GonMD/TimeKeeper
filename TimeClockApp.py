@@ -2,9 +2,9 @@ import os
 import sys
 import sqlite3
 import time
+import re
 
 conn = sqlite3.connect('employeeDatabase.db')
-
 c = conn.cursor()
 
 c.execute('''CREATE TABLE IF NOT EXISTS users(
@@ -57,11 +57,61 @@ while answer:
         print("\n Hours: X")
 
     elif answer == "4":
-        nameFirst = input("\n Enter first name: ")
-        nameMiddle = input("\n Enter middle name: ")
-        nameLast = input("\n Enter last name: ")
-        dateOfBirth = str(input("\n Enter Date of Birth, eg. 4/22/1987: "))
-        emailAddress = str(input("\n Please enter your email address: "))
+
+        #First name entry =======================================================
+
+        while True:
+
+            nameFirst = str(input("\n Enter first name: "))
+            if re.match ("^[^A-Za-z]*$", nameFirst):
+                print ("Use only letters.")
+
+            else:
+                break
+
+        #Middle name entry =======================================================
+                    
+        while True:    
+            
+            nameMiddle = input("\n Enter middle name: ")
+            if re.match ("^[^A-Za-z]*$", nameMiddle):
+                print ("Use only letters.")
+
+            else:
+                break
+
+        #Last name entry =======================================================
+
+        while True:
+            
+            nameLast = input("\n Enter last name: ")
+            if re.match ("^[^A-Za-z]*$", nameLast):
+                print ("Use only letters.")
+
+            else:
+                break
+        
+        #Date of birth entry =======================================================
+
+        while True:
+
+            dateOfBirth = str(input("\n Enter Date of Birth, eg. XX/XX/XXXX: "))
+            if re.match ("^\d{2}/\d{2}/\d{4}$", dateOfBirth):
+                break
+
+            else:
+                print ("Use the supplied format")
+
+        #Email entry =======================================================
+
+        while True:
+
+            emailAddress = str(input("\n Please enter your email address: "))
+            if re.match ("^.+@.+$" , emailAddress):
+                break
+
+            else:
+                print ("Use proper formatting")
 
         newEmployee = str(nameLast + ", " + nameFirst + " " + nameMiddle)
 
@@ -71,7 +121,14 @@ while answer:
         print("\n New employee added: " + nameLast + ", " + nameFirst + " " + nameMiddle + ", born on " + dateOfBirth)
         
     elif answer == "5":
-        print (newEmployee)
+
+        c.execute('SELECT * FROM users ORDER BY name DESC')
+        fetchEmployeeList = c.fetchall()
+        employeeList = fetchEmployeeList[1]
+                
+        print (fetchEmployeeList)
+        print (employeeList)
+        #print ("Test")
 
     elif answer == "6":
         print ("Test")
