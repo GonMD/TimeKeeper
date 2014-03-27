@@ -21,7 +21,7 @@ while answer:
     2. Clock Out
     3. View Hours [TEST]
     4. Add Employee
-    5. List Employees [TEST]
+    5. List Employees 
     6. Administrator [TEST]
     7. Exit application
 """)
@@ -122,22 +122,58 @@ while answer:
         
     elif answer == "5":
 
-        c.execute('SELECT * FROM users ORDER BY name DESC')
-        fetchEmployeeList = c.fetchall()
-        employeeList = fetchEmployeeList[1]
-                
-        print (fetchEmployeeList)
-        print (employeeList)
-        #print ("Test")
+        with conn:
+
+            c.execute("SELECT * FROM users ")
+
+            while True:
+
+                row = c.fetchone()
+
+                if row == None:
+                    break
+
+                print ("Employee ID [", row[0],"] |","Name:", row[1])
 
     elif answer == "6":
-        print ("Test")
 
-    
-    elif answer == "7":
+        
+
+        answer = True
+        while answer:
+            print("""
+            Administrator Sub Menu:
+            1. Add Hours [TEST]
+            2. Remove Hours [TEST]
+            3. Remove Employee [TEST]
+            4. Exit
+         """)
+
+            answer2 = input("Select an option.")
+
+            if answer2 == "1":
+                print ("Test 1")
+
+
+            elif answer2 == "2":
+                print ("Test 2")
+
+
+            elif answer2 == "3":
+                print ("Test 3")
+                
+
+            elif answer2 == "4":
+                c.close()
+                sys.exit()
+                
+
+            else:
+                print ("\n Not a valid Choice. Please select an option.")
+        
+        elif answer == "7":
         c.close()
         sys.exit()
 
     else:
         print("\n Not a valid Choice. Please select an option.")
-                    
