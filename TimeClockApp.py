@@ -22,7 +22,7 @@ while answer:
     3. View Hours [TEST]
     4. Add Employee
     5. List Employees 
-    6. Administrator [TEST]
+    6. Remove Employee
     7. Exit application
 """)
 
@@ -137,41 +137,13 @@ while answer:
 
     elif answer == "6":
 
+        employeeId = input("Enter employee ID for removal from system: ")
+
+        c.execute('DELETE FROM users WHERE id=?' , (employeeId))
+
         
-
-        answer = True
-        while answer:
-            print("""
-            Administrator Sub Menu:
-            1. Add Hours [TEST]
-            2. Remove Hours [TEST]
-            3. Remove Employee [TEST]
-            4. Exit
-         """)
-
-            answer2 = input("Select an option.")
-
-            if answer2 == "1":
-                print ("Test 1")
-
-
-            elif answer2 == "2":
-                print ("Test 2")
-
-
-            elif answer2 == "3":
-                print ("Test 3")
-                
-
-            elif answer2 == "4":
-                c.close()
-                sys.exit()
-                
-
-            else:
-                print ("\n Not a valid Choice. Please select an option.")
         
-        elif answer == "7":
+    elif answer == "7":
         c.close()
         sys.exit()
 
